@@ -175,29 +175,30 @@ CREATE TABLE Pokemon (
     spd INT,
     type VARCHAR(20),
     FOREIGN KEY (cov_1) REFERENCES Moves(move_id),
-    FOREIGN KEY (cov_2) REFERENCES Moves(move_id)
+    FOREIGN KEY (cov_2) REFERENCES Moves(move_id),
+    Name varchar(30)
 );
 
 -- Step 2: Insert data into the Pokemon table
-INSERT INTO Pokemon (cov_1, cov_2, hp, att, defe, spatt, spdef, spd, type) VALUES
-    (38, 78, 80, 75, 70, 100, 95, 110, 'fire'), -- Flamey
-    (26,55, 100, 70, 110, 80, 100, 70, 'water'), -- Bubbly
-    (99,31, 75, 85, 100, 85, 105, 80, 'grass'), -- Leafy
-    (66, 49, 60, 70, 60, 130, 50, 140, 'electric'), -- Zapper
-    (74, 61, 60, 50, 80, 110, 100, 110, 'ice'), -- Icy
-    (38, 1, 80, 130, 80, 100, 80, 80, 'dragon'), -- Dracomenace
-    (72, 44, 90, 140, 80, 60, 100, 80, 'ground'), -- Groundian
-    (55,38,70,105,140,50,90,55,"rock"),
-    (34,38, 130, 80, 100, 70, 80, 50, 'steel'), -- Metaleon
-    (30, 1, 140, 80, 100, 65, 85, 40, 'normal'), -- Chunky
-    (83, 78, 80, 75, 85, 110, 100, 100, 'fairy'), -- Misteon
-    (41, 44, 45, 150, 120, 30, 80, 85, 'fighting'), -- Fisty
-    (94, 83, 100, 80, 60, 80, 60, 130, 'dark'), -- Nasty
-    (57, 61, 50, 40, 60, 150, 110, 100, 'psychic'), -- Brainy
-    (63,26 , 80, 90, 50, 90, 100, 100, 'ghost'), -- Spooky
-    (68, 38, 100, 110, 80, 75, 75, 70, 'flying'), -- Birdy
-    (45,99, 100, 80, 60, 80, 60, 130, 'bug'), -- Beetlebug
-    (72, 38, 70, 105, 70, 100, 70, 95, 'poison'); -- Sludgemound
+INSERT INTO Pokemon (cov_1, cov_2, hp, att, defe, spatt, spdef, spd, type,name) VALUES
+    (38, 78, 80, 75, 70, 100, 95, 110, 'fire','Flamey'),
+    (26,55, 100, 70, 110, 80, 100, 70, 'water', "Bubbly"),
+    (99,31, 75, 85, 100, 85, 105, 80, 'grass','Leafy'),
+    (66, 49, 60, 70, 60, 130, 50, 140, 'electric', "Zapper"),
+    (74, 61, 60, 50, 80, 110, 100, 110, 'ice',"Icy"),
+    (38, 1, 80, 130, 80, 100, 80, 80, 'dragon',"Dracomenace"),
+    (72, 44, 90, 140, 80, 60, 100, 80, 'ground',"Groundian"),
+    (55,38,70,105,140,50,90,55,"rock","Stoney"),
+    (34,38, 130, 80, 100, 70, 80, 50, 'steel',"Metaleon"),
+    (30, 1, 140, 80, 100, 65, 85, 40, 'normal',"Chunky"),
+    (83, 78, 80, 75, 85, 110, 100, 100, 'fairy',"Misteon"),
+    (41, 44, 45, 150, 120, 30, 80, 85, 'fighting',"Fisty"),
+    (94, 83, 100, 80, 60, 80, 60, 130, 'dark',"Nasty"),
+    (57, 61, 50, 40, 60, 150, 110, 100, 'psychic',"Brainy"),
+    (63,26 , 80, 90, 50, 90, 100, 100, 'ghost','Spooky'),
+    (68, 38, 100, 110, 80, 75, 75, 70, 'flying','Birdy'),
+    (45,99, 100, 80, 60, 80, 60, 130, 'bug',"Beetlebug"),
+    (72, 38, 70, 105, 70, 100, 70, 95, 'poison',"Sludgemound");
 
 
 create table Nature (
