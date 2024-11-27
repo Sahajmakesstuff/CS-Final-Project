@@ -64,11 +64,13 @@ class Move:
                                 self.power*
                                 attack/defe)/25)+2)*
                                 stab *rand *effect)
-        damage = min(damage, defender.hpIG) #clamp
+        
         critical = random.randint(1, 16) == 1
 
         if critical:
             damage = int(damage * 1.5)  # Critical hit does 1.5x damage
+
+        damage = min(damage, defender.hpIG) #clamp
 
         defender.hpIG -= damage
         

@@ -3,6 +3,7 @@ import random
 from tkinter import ttk
 import math
 from Pokemon import *
+from moves import *
 import mysql.connector
 
 wins=0
@@ -30,8 +31,21 @@ MOVE_TYPE_COLORS = {
 }
 
 database=mysql.connector.connect(host="localhost",user="root",password="1234")
-opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
-           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
+cur=database.cursor()
+sql_init='''show databases;
+source "C:/Users/ss130/Desktop/sahaj/cs project/sql integrated/data.sql";'''
+cur.execute(sql_init)
+cur.fetchall()
+cur.close()
+
+database=mysql.connector.connect(host="localhost",user="root",password="1234",database="pokemon_game")
+cur=database.cursor()
+pokemon="select name from pokemon;"
+cur.execute(pokemon)
+opp=cur.fetchall()
+opponents=[]
+for i in opp:
+    opponents.append(i[0])
 
 class Mainframe:
     def __init__(self, root):
@@ -39,15 +53,14 @@ class Mainframe:
         self.root.title("Pokemon Battle Simulator")
         self.root.geometry("800x600")
         self.root.configure(bg="#F0F8FF")
+        self.splash_screen()
 
+    def splash_screen(self):
         self.battles_left = 10  # Max of 10 battles
         self.available_opponents = opponents[:]  # Create a list of available opponents
         self.player_pokemon = None
         self.player_lost = False
 
-        self.splash_screen()
-
-    def splash_screen(self):
         self.splash_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.splash_frame.pack(expand=True)
 
@@ -105,7 +118,6 @@ class Mainframe:
         self.opponent_pokemon.nat_b()
         self.opponent_pokemon.calc_stats()
 
-
         self.battle_log = tk.Text(self.battle_frame, height=10, width=60, state=tk.DISABLED, bg="#FFFFFF")
         self.battle_log.pack(pady=10)
         
@@ -139,6 +151,7 @@ class Mainframe:
                 self.battles_left -= 1
                 self.root.update()
                 self.check_for_more_battles()
+                return
             # else:
             #     self.root.after(1000, self.opponent_turn)
             
@@ -186,9 +199,9 @@ class Mainframe:
 
             if self.opponent_pokemon.is_fainted():
                 self.log_message(f"{self.opponent_pokemon.name} fainted!")
-                self.battles_left -= 1
                 self.root.update()
                 self.check_for_more_battles()
+                return
 
     def update_health_bars(self):
         self.player_label.config(text=f"{self.player_pokemon.name}: {self.player_pokemon.hpIG}/{self.player_pokemon.hp} HP")
