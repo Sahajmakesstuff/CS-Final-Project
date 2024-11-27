@@ -1,6 +1,6 @@
 create database pokemon_game;
 
-use database pokemon_game:
+use pokemon_game:
 
 CREATE TABLE Strengths (
     type VARCHAR(50),
@@ -165,8 +165,8 @@ INSERT INTO Moves (name, type, power, contact, accuracy) VALUES
 -- Step 1: Create the Pokemon table
 CREATE TABLE Pokemon (
     pokemon_id INT PRIMARY KEY AUTO_INCREMENT,
-    cov_1 INT NOT NULL, -- Placeholder for Move 1 (Foreign key from Moves table)
-    cov_2 INT NOT NULL, -- Placeholder for Move 2 (Foreign key from Moves table)
+    cov_1 INT NOT NULL, 
+    cov_2 INT NOT NULL, 
     hp INT,
     att INT,
     defe INT,

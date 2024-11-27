@@ -3,6 +3,7 @@ import random
 from tkinter import ttk
 import math
 from Pokemon import *
+import mysql.connector
 
 wins=0
 
@@ -28,6 +29,7 @@ MOVE_TYPE_COLORS = {
     "fairy": "#D685AD",     # Pinkish Purple
 }
 
+database=mysql.connector.connect(host="localhost",user="root",password="1234")
 opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
            "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
 
