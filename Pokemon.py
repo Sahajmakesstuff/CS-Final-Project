@@ -2,6 +2,7 @@
 import random
 import math
 from moves import *
+import mysql.connector
 
 #list of natures
 list_nat=["lonely (+att -defe)","brave (+att -spd)","adamant (+att -spatt)","naughty (+att -spdef)",
@@ -16,6 +17,43 @@ class Pokemon:
     def __init__(self,name): #1 parameter name
 
         self.name=name
+
+        # # Connect to MySQL database
+        # database = mysql.connector.connect(
+        #     host="localhost",
+        #     user="root",
+        #     password="Sahaj@1234",
+        #     database="pokemon_game"  # Ensure this matches your database name
+        # )
+
+        # cur = database.cursor()
+
+        # # Query to fetch all natures
+        # nature_query = "SELECT name, att, defe, spatt, spdef, spd FROM Nature;"
+        # cur.execute(nature_query)
+
+        # # Fetch results
+        # results = cur.fetchall()
+
+        # list_nat=[]
+        # for i in results:
+        #     list_nat.append(i)
+    
+        # # Close the connection
+        # cur.close()
+        # database.close()
+
+        # data2=mysql.connector.connect(
+        #     host="localhost",
+        #     user="root",
+        #     password="Sahaj@1234",
+        #     database="pokemon_game"
+        # )
+        # cur=data2.cursor()
+
+        # pokemon_query = "SELECT * FROM pokemon WHERE name = %s"
+        # cur.execute(pokemon_query, (self.name,))
+        # pokemon=list(cur.fetchall()[0])              
 
         #selecting random nature
         self.nature=random.choice(list_nat)
@@ -47,12 +85,12 @@ class Pokemon:
         if self.name=="Flamey":
             self.type="fire"
             self.lvl=50
-            self.base_hp=80
-            self.base_att=75
-            self.base_def=70
-            self.base_spd=110
+            self.base_hp=70
+            self.base_att=100   
+            self.base_def=75
+            self.base_spd=80
             self.base_spatt=100
-            self.base_spdef=95
+            self.base_spdef=75
 
             self.stab_options=["Flamethrower","Fire Blast","Fire Punch",
                               "Flare Blitz","Fire Fang","Heat Wave","Lava Plume"]
@@ -75,10 +113,10 @@ class Pokemon:
             self.lvl=50
             self.base_hp=100
             self.base_att=70
-            self.base_def=110
-            self.base_spd=70
-            self.base_spatt=80
-            self.base_spdef=100
+            self.base_def=90
+            self.base_spd=60
+            self.base_spatt=100
+            self.base_spdef=80
 
             self.stab_options=["Surf","Crabhammer","Hydro Pump",
                               "Liquidation","Muddy Water","Scald","Waterfall"]
@@ -99,12 +137,12 @@ class Pokemon:
         elif self.name=="Leafy":
             self.type="grass"
             self.lvl=50
-            self.base_hp=75
-            self.base_att=85
-            self.base_def=100
-            self.base_spd=80
-            self.base_spatt=85
-            self.base_spdef=105
+            self.base_hp=70
+            self.base_att=75
+            self.base_def=65
+            self.base_spd=110   
+            self.base_spatt=100
+            self.base_spdef=80
 
             self.stab_options=["Energy Ball","Seed Bomb",
                               "Giga Drain","Leaf Storm","Leaf Blade"]
@@ -128,9 +166,9 @@ class Pokemon:
             self.base_hp=60
             self.base_att=70
             self.base_def=60
-            self.base_spd=140
-            self.base_spatt=130
-            self.base_spdef=50
+            self.base_spd=120
+            self.base_spatt=110
+            self.base_spdef=80
 
             self.stab_options=["Thunderbolt","Discharge",
                               "Thunder Fang","Thunder","Thunder Punch","Wild Charge"]
@@ -178,10 +216,10 @@ class Pokemon:
             self.type="dragon"
             self.lvl=50
             self.base_hp=80
-            self.base_att=130
+            self.base_att=120
             self.base_def=80
             self.base_spd=80
-            self.base_spatt=100
+            self.base_spatt=60
             self.base_spdef=80
 
             self.stab_options=["Dragon Claw","Dragon Breath","Draco Meteor","Dragon Pulse",
@@ -229,12 +267,12 @@ class Pokemon:
         elif self.name=="Stoney":
             self.type="rock"
             self.lvl=50
-            self.base_hp=70
-            self.base_att=105
-            self.base_def=140
-            self.base_spd=55
+            self.base_hp=90
+            self.base_att=100
+            self.base_def=120
+            self.base_spd=60
             self.base_spatt=50
-            self.base_spdef=90
+            self.base_spdef=80
 
             self.stab_options=["Rock Slide","Stone Edge","Power Gem",
                               "Ancient Power","Head Smash"]
@@ -281,12 +319,12 @@ class Pokemon:
         elif self.name=="Chunky":
             self.type="normal"
             self.lvl=50
-            self.base_hp=140
-            self.base_att=80
+            self.base_hp=130
+            self.base_att=100
             self.base_def=100
-            self.base_spd=40
-            self.base_spatt=65
-            self.base_spdef=85
+            self.base_spd=20
+            self.base_spatt=20
+            self.base_spdef=130
 
             self.stab_options=["Body Slam","Headbutt","Strength",
                               "Hyper Voice","Hyper Beam","Explosion"]
@@ -307,12 +345,12 @@ class Pokemon:
         elif self.name=="Misteon":
             self.type="fairy"
             self.lvl=50
-            self.base_hp=80
-            self.base_att=75
-            self.base_def=85
+            self.base_hp=60
+            self.base_att=60
+            self.base_def=80
             self.base_spd=100
-            self.base_spatt=110
-            self.base_spdef=100
+            self.base_spatt=120
+            self.base_spdef=80
 
             self.stab_options=["Moonblast","Dazzling Gleam","Play Rough",
                               "Spirit Break","Misty Explosion"]
@@ -333,12 +371,12 @@ class Pokemon:
         elif self.name=="Fisty":
             self.type="fighting"
             self.lvl=50
-            self.base_hp=45
-            self.base_att=150
-            self.base_def=120
-            self.base_spd=85
-            self.base_spatt=30
-            self.base_spdef=80
+            self.base_hp=55
+            self.base_att=140
+            self.base_def=95
+            self.base_spd=70
+            self.base_spatt=65
+            self.base_spdef=75
 
             self.stab_options=["Brick Break","Aura Sphere","Close Combat",
                               "Cross Chop","Focus Blast","Superpower"]
@@ -359,12 +397,12 @@ class Pokemon:
         elif self.name=="Nasty":
             self.type="dark"
             self.lvl=50
-            self.base_hp=100
-            self.base_att=80
-            self.base_def=60
-            self.base_spd=130
+            self.base_hp=70
+            self.base_att=90
+            self.base_def=80
+            self.base_spd=90
             self.base_spatt=80
-            self.base_spdef=60
+            self.base_spdef=90
 
             self.stab_options=["Dark Pulse","Knock Off","Crunch",
                               "Night Slash","Sucker Punch","Throat Chop"]
@@ -385,12 +423,12 @@ class Pokemon:
         elif self.name=="Brainy":
             self.type="psychic"
             self.lvl=50
-            self.base_hp=50
-            self.base_att=40
+            self.base_hp=60
+            self.base_att=50
             self.base_def=60
-            self.base_spd=100
-            self.base_spatt=150
-            self.base_spdef=110
+            self.base_spd=70
+            self.base_spatt=140
+            self.base_spdef=120
 
             self.stab_options=["Psychic","Psyche Punch",
                               "Psyshock","Psycho Cut"]
@@ -411,12 +449,12 @@ class Pokemon:
         elif self.name=="Spooky":
             self.type="ghost"
             self.lvl=50
-            self.base_hp=80
-            self.base_att=90
-            self.base_def=50
-            self.base_spd=100
+            self.base_hp=90
+            self.base_att=80
+            self.base_def=90
+            self.base_spd=70
             self.base_spatt=90
-            self.base_spdef=100
+            self.base_spdef=80
 
             self.stab_options=["Shadow Ball","Shadow Claw","Hex","Shadow Punch",
                               "Poltergeist"]
@@ -437,12 +475,12 @@ class Pokemon:
         elif self.name=="Birdy":
             self.type="flying"
             self.lvl=50
-            self.base_hp=100
-            self.base_att=110
+            self.base_hp=70
+            self.base_att=100
             self.base_def=80
-            self.base_spd=70
-            self.base_spatt=75
-            self.base_spdef=75
+            self.base_spd=110
+            self.base_spatt=60
+            self.base_spdef=80  
 
             self.stab_options=["Brave Bird","Air Slash",
                               "Fly","Drill Peck","Hurricane","Dual Wingbeat"]
@@ -463,12 +501,12 @@ class Pokemon:
         elif self.name=="Beetlebug":
             self.type="bug"
             self.lvl=50
-            self.base_hp=100
-            self.base_att=80
-            self.base_def=60
-            self.base_spd=130
-            self.base_spatt=80
-            self.base_spdef=60
+            self.base_hp=80
+            self.base_att=90
+            self.base_def=70
+            self.base_spd=90
+            self.base_spatt=70
+            self.base_spdef=100
 
             self.stab_options=["X-Scissor","Bug Buzz","Leech Life",
                               "Megahorn","Lunge"]
@@ -489,12 +527,12 @@ class Pokemon:
         elif self.name=="Sludgemound":
             self.type="poison"
             self.lvl=50
-            self.base_hp=70
-            self.base_att=105
-            self.base_def=70
-            self.base_spd=95
+            self.base_hp=60 
+            self.base_att=110
+            self.base_def=80
+            self.base_spd=70    
             self.base_spatt=100
-            self.base_spdef=70
+            self.base_spdef=80
 
             self.stab_options=["Sludge Bomb","Poison Jab","Sludge Wave","Gunk Shot",
                               "Cross Poison"]
@@ -516,6 +554,12 @@ class Pokemon:
 
     #nature boost
     def nat_b(self):
+        # self.nature=list(self.nature)
+        # self.att_b=self.nature[1]
+        # self.def_b=self.nature[2]
+        # self.spatt_b=self.nature[3]
+        # self.spdef_b=self.nature[4]
+        # self.spd_b=self.nature[5]
         if self.nature=="lonely (+att -defe)":
             self.att_b=1.2
             self.def_b=0.8
@@ -595,6 +639,7 @@ class Pokemon:
         elif self.nature=="careful (+spdef -spatt)":
             self.spdef_b=1.2
             self.spatt_b=0.8
+
 
     #calculating stats
     def calc_stats(self):

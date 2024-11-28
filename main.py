@@ -4,7 +4,7 @@ from tkinter import ttk
 import math
 from Pokemon import *
 from moves import *
-import mysql.connector
+# import mysql.connector
 
 wins=0
 
@@ -30,33 +30,52 @@ MOVE_TYPE_COLORS = {
     "fairy": "#D685AD",     # Pinkish Purple
 }
 
-database=mysql.connector.connect(host="localhost",user="root",password="1234")
-cur=database.cursor()
-sql_init='''show databases;
-source "C:/Users/ss130/Desktop/sahaj/cs project/sql integrated/data.sql";'''
-cur.execute(sql_init)
-cur.fetchall()
-cur.close()
+# # Connect to MySQL database
+# database = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="Sahaj@1234",
+#     # database="pokemon_game"  # Use the target database directly if needed
+# )
 
-database=mysql.connector.connect(host="localhost",user="root",password="1234",database="pokemon_game")
-cur=database.cursor()
-pokemon="select name from pokemon;"
-cur.execute(pokemon)
-opp=cur.fetchall()
-opponents=[]
-for i in opp:
-    opponents.append(i[0])
+# cur = database.cursor()
+
+# # Step 2: Load the SQL file
+# with open(r"D:\Sahaj PYQs\CS-Final-Project-main\data.sql", "r") as file:
+#     sql_script = file.read()
+
+# # Split the SQL script into individual statements and execute
+# for statement in sql_script.split(';'):
+#     if statement.strip():  # Skip empty statements
+#         cur.execute(statement)
+
+# # Step 3: Fetch data from the 'pokemon' table
+# pokemon_query = "SELECT name FROM pokemon;"
+# cur.execute(pokemon_query)
+# opp = cur.fetchall()
+
+# # Prepare the opponents list
+# opponents = [i[0] for i in opp]
+# print("Opponents:", opponents)
+
+# cur.close()
+# database.close()
+
+opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
+           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
 
 class Mainframe:
     def __init__(self, root):
         self.root = root
         self.root.title("Pokemon Battle Simulator")
-        self.root.geometry("800x600")
+        self.root.geometry("1000x800")
         self.root.configure(bg="#F0F8FF")
         self.splash_screen()
 
     def splash_screen(self):
         self.battles_left = 10  # Max of 10 battles
+        opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
+           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
         self.available_opponents = opponents[:]  # Create a list of available opponents
         self.player_pokemon = None
         self.player_lost = False
@@ -64,10 +83,10 @@ class Mainframe:
         self.splash_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.splash_frame.pack(expand=True)
 
-        welcome_label = tk.Label(self.splash_frame, text="Welcome to the Pokémon Battle Simulator", font=("Helvetica", 16, "bold"), bg="#F0F8FF")
+        welcome_label = tk.Label(self.splash_frame, text="Welcome to the Pokémon Battle Simulator", font=("Helvetica", 24, "bold"), bg="#F0F8FF")
         welcome_label.pack(pady=20)
 
-        start_button = tk.Button(self.splash_frame, text="Start", font=("Helvetica", 12), command=self.show_starter_selection, bg="#87CEEB")
+        start_button = tk.Button(self.splash_frame, text="Start", font=("Helvetica", 16), command=self.show_starter_selection, bg="#87CEEB")
         start_button.pack(pady=20)
 
     def show_starter_selection(self):
@@ -75,7 +94,7 @@ class Mainframe:
         self.selection_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.selection_frame.pack(expand=True)
 
-        label = tk.Label(self.selection_frame, text="Choose Your Starter Pokémon", font=("Helvetica", 14), bg="#F0F8FF")
+        label = tk.Label(self.selection_frame, text="Choose Your Starter Pokémon", font=("Helvetica", 18), bg="#F0F8FF")
         label.pack(pady=10)
         
         self.starter_options=[]
@@ -88,7 +107,7 @@ class Mainframe:
             opponents_dummy.remove(mon)
 
         for idx, starter in enumerate(self.starter_options):
-            button = tk.Button(self.selection_frame, text=starter, font=("Helvetica", 12),
+            button = tk.Button(self.selection_frame, text=starter, font=("Helvetica", 16),
                                command=lambda idx=idx: self.choose_starter(idx), bg="#87CEEB")
             button.pack(pady=5)
     
@@ -106,6 +125,11 @@ class Mainframe:
         self.battle_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.battle_frame.pack(expand=True)
 
+        opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
+           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
+        opponents.remove(self.player_pokemon.name)
+        self.available_opponents = opponents[:]  # Create a list of available opponents
+
         # Randomly select an opponent Pokémon that hasn't been used yet
         if len(self.available_opponents) > 0:
             opponent_data = random.choice(self.available_opponents)
@@ -118,20 +142,20 @@ class Mainframe:
         self.opponent_pokemon.nat_b()
         self.opponent_pokemon.calc_stats()
 
-        self.battle_log = tk.Text(self.battle_frame, height=10, width=60, state=tk.DISABLED, bg="#FFFFFF")
+        self.battle_log = tk.Text(self.battle_frame, height=20, width=100, state=tk.DISABLED, bg="#FFFFFF")
         self.battle_log.pack(pady=10)
         
         self.player_label = tk.Label(self.battle_frame, text=f"{self.player_pokemon.name}: {self.player_pokemon.hpIG}/{self.player_pokemon.hp} HP",
-                                     font=("Helvetica", 12), bg="#F0F8FF")
+                                     font=("Helvetica", 16), bg="#F0F8FF")
         self.player_label.pack(pady=5)
 
         self.opponent_label = tk.Label(self.battle_frame, text=f"{self.opponent_pokemon.name}: {self.opponent_pokemon.hpIG}/{self.opponent_pokemon.hp} HP",
-                                       font=("Helvetica", 12), bg="#F0F8FF")
+                                       font=("Helvetica", 16), bg="#F0F8FF")
         self.opponent_label.pack(pady=5)
 
         self.move_buttons = []
         for move in self.player_pokemon.moves:
-            button = tk.Button(self.battle_frame, text=f"{move.name} ({move.type})", font=("Helvetica", 12),
+            button = tk.Button(self.battle_frame, text=f"{move.name} ({move.type})", font=("Helvetica", 16),
                                command=lambda move=move: self.execute_turn(move), bg=MOVE_TYPE_COLORS[move.type])
             button.pack(pady=5)
             self.move_buttons.append(button)
@@ -218,7 +242,8 @@ class Mainframe:
             return
 
         if self.battles_left == 0:
-            self.end_game("Congratulations! You've won all 10 battles!")
+            self.root.update()
+            self.root.after(3000,self.end_game("Congratulations! You've won all 10 battles!"))  
         else:
             # Heal the player's Pokémon before the next battle
             self.heal_player_pokemon()
@@ -242,10 +267,10 @@ class Mainframe:
         self.end_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.end_frame.pack(expand=True)
 
-        end_label = tk.Label(self.end_frame, text=message, font=("Helvetica", 16), bg="#F0F8FF")
+        end_label = tk.Label(self.end_frame, text=message, font=("Helvetica", 24), bg="#F0F8FF")
         end_label.pack(pady=20)
 
-        restart_button = tk.Button(self.end_frame, text="Restart", font=("Helvetica", 12), command=self.restart_game, bg="#87CEEB")
+        restart_button = tk.Button(self.end_frame, text="Restart", font=("Helvetica", 16), command=self.restart_game, bg="#87CEEB")
         restart_button.pack(pady=10)
 
     def restart_game(self):

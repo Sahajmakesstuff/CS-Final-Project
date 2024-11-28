@@ -80,8 +80,8 @@ type_chart={
         ["electric","ice","rock","steel"]
     ],
     "bug": [
-        ["grass","rock","fighting","dark","psychic"],
-        ["fire","steel","ghost","flying","poison"]
+        ["grass","fighting","dark","psychic"],
+        ["fire","steel","ghost","flying","poison","rock"]
     ],
     "poison": [
         ["grass","fairy","fighting","bug"],
