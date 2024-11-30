@@ -3,33 +3,83 @@ create database pokemon_game;
 use pokemon_game;
 
 CREATE TABLE Strengths (
-    type VARCHAR(50),
     strong VARCHAR(255),
     weak VARCHAR(255)
 );
 
-INSERT INTO Strengths (type, strong, weak) VALUES
-('fire', 'grass,ice,steel,fairy', 'water,dragon,ground,rock'),
-('water', 'fire,ice,ground,rock', 'grass,electric,dragon'),
-('grass', 'water,electric,ground,rock', 'fire,ice,dragon,steel,flying,poison'),
-('electric', 'water,steel,flying', 'grass,dragon,ground'),
-('ice', 'grass,dragon,ground,flying', 'fire,water,rock,steel,fighting'),
-('dragon', 'fire,water,grass,electric', 'ice,steel,fairy'),
-('ground', 'fire,electric,rock,steel', 'water,grass,ice,flying'),
-('rock', 'fire,ice,normal,flying', 'water,grass,ground,steel,fighting'),
-('steel', 'ice,dragon,rock,normal,fairy,grass,flying,bug', 'fire,electric,ground,fighting'),
-('normal', '', 'rock,steel,fighting,ghost'),
-('fairy', 'dragon,fighting,dark', 'fire,steel,ghost,poison'),
-('fighting', 'ice,rock,steel,normal,dark', 'fairy,psychic,ghost,flying,bug,poison'),
-('dark', 'psychic,ghost', 'fairy,fighting,bug'),
-('psychic', 'fighting,poison', 'dark,ghost,bug'),
-('ghost', 'normal,fairy,fighting,psychic,bug,poison', 'dark'),
-('flying', 'grass,ground,fighting,bug', 'electric,ice,rock,steel'),
-('bug', 'grass,rock,fighting,dark,psychic', 'fire,steel,ghost,flying,poison'),
-('poison', 'grass,fairy,fighting,bug', 'ground,steel,psychic,ghost');
+INSERT INTO Strengths (strong, weak) VALUES
+('fire','grass'),
+('fire','ice'),
+('fire','steel'),
+('fire','fairy'),
+('water','fire'),
+('water','ice'),
+('water','ground'),
+('water','rock'),
+('grass','water'),
+('grass','electric'),
+('grass','ground'),
+('grass','rock'),
+('electric','water'),
+('electric','steel'),
+('electric','flying'),
+('ice','grass'),
+('ice','dragon'),
+('ice','ground'),
+('ice','flying'),
+('dragon','fire'),
+('dragon','water'),
+('dragon','grass'),
+('dragon','electric'),
+('ground','fire'),
+('ground','electric'),
+('ground','rock'),
+('ground','steel'),
+('rock','fire'),
+('rock','ice'),
+('rock','normal'),
+('rock','flying'),
+('steel','ice'),
+('steel','dragon'),
+('steel','rock'),
+('steel','normal'),
+('steel','fairy'),
+('normal',''),
+('normal','rock'),
+('normal','steel'),
+('normal','fighting'),
+('normal','ghost'),
+('fairy','dragon'),
+('fairy','fighting'),
+('fairy','dark'),
+('fighting','ice'),
+('fighting','rock'),
+('fighting','steel'),
+('fighting','normal'),
+('fighting','dark'),
+('dark','psychic'),
+('dark','ghost'),
+('psychic','fighting'),
+('psychic','poison'),
+('ghost','normal'),
+('ghost','fairy'),
+('ghost','fighting'),
+('ghost','psychic'),
+('ghost','bug'),
+('ghost','poison'),
+('flying','grass'),
+('flying','ground'),
+('flying','fighting'),
+('flying','bug'),
+('bug','grass'),
+('bug','rock'),
+('bug','fighting'),
+('bug','dark'),
+('bug','psychic'),
+('poison','grass'),
+('poison','fairy'),
+('poison','fighting');
 
-
--- Step 1: Create the table
 CREATE TABLE Moves (
     move_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(20),
@@ -39,7 +89,6 @@ CREATE TABLE Moves (
     accuracy INT
 );
 
--- Step 2: Insert data into the table
 INSERT INTO Moves (name, type, power, contact, accuracy) VALUES
     ("Flamethrower", "fire", 90, "special", 95),
     ("Fire Blast", "fire", 110, "special", 85),
@@ -162,7 +211,6 @@ INSERT INTO Moves (name, type, power, contact, accuracy) VALUES
     ("Gunk Shot", "poison", 120, "physical", 80),
     ("Cross Poison", "poison", 70, "physical", 95);
 
--- Step 1: Create the Pokemon table
 CREATE TABLE Pokemon (
     pokemon_id INT PRIMARY KEY AUTO_INCREMENT,
     cov_1 INT NOT NULL, 
@@ -179,7 +227,6 @@ CREATE TABLE Pokemon (
     Name varchar(30)
 );
 
--- Step 2: Insert data into the Pokemon table
 INSERT INTO Pokemon (cov_1, cov_2, hp, att, defe, spatt, spdef, spd, type,name) VALUES
     (38, 78, 80, 75, 70, 100, 95, 110, 'fire','Flamey'),
     (26,55, 100, 70, 110, 80, 100, 70, 'water', "Bubbly"),

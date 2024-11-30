@@ -1,10 +1,9 @@
 import tkinter as tk
 import random
-from tkinter import ttk
 import math
 from Pokemon import *
 from moves import *
-# import mysql.connector
+from database import DataStore
 
 wins=0
 
@@ -30,39 +29,13 @@ MOVE_TYPE_COLORS = {
     "fairy": "#D685AD",     # Pinkish Purple
 }
 
-# # Connect to MySQL database
-# database = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="Sahaj@1234",
-#     # database="pokemon_game"  # Use the target database directly if needed
-# )
+datastore=DataStore()
+opp=datastore.opponents_list()
+natures=datastore.nature_list()
+nat_list=[Nature(i) for i in natures]
 
-# cur = database.cursor()
-
-# # Step 2: Load the SQL file
-# with open(r"D:\Sahaj PYQs\CS-Final-Project-main\data.sql", "r") as file:
-#     sql_script = file.read()
-
-# # Split the SQL script into individual statements and execute
-# for statement in sql_script.split(';'):
-#     if statement.strip():  # Skip empty statements
-#         cur.execute(statement)
-
-# # Step 3: Fetch data from the 'pokemon' table
-# pokemon_query = "SELECT name FROM pokemon;"
-# cur.execute(pokemon_query)
-# opp = cur.fetchall()
-
-# # Prepare the opponents list
-# opponents = [i[0] for i in opp]
-# print("Opponents:", opponents)
-
-# cur.close()
-# database.close()
-
-opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
-           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
+# Prepare the opponents list
+opponents = [i[0] for i in opp]
 
 class Mainframe:
     def __init__(self, root):
@@ -74,8 +47,6 @@ class Mainframe:
 
     def splash_screen(self):
         self.battles_left = 10  # Max of 10 battles
-        opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
-           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
         self.available_opponents = opponents[:]  # Create a list of available opponents
         self.player_pokemon = None
         self.player_lost = False
@@ -99,7 +70,7 @@ class Mainframe:
         
         self.starter_options=[]
 
-        opponents_dummy=opponents
+        opponents_dummy=opponents[:]
 
         for i in range(3):
             mon=random.choice(opponents_dummy)
@@ -113,7 +84,7 @@ class Mainframe:
     
     def choose_starter(self, idx):
         chosen_starter = self.starter_options[idx]
-        self.player_pokemon = Pokemon(chosen_starter)
+        self.player_pokemon = Pokemon(datastore,chosen_starter,nat_list)
         self.player_pokemon.nat_b()
         self.player_pokemon.calc_stats()
         self.available_opponents.remove(chosen_starter)  # Remove chosen starter from available opponents
@@ -125,11 +96,6 @@ class Mainframe:
         self.battle_frame = tk.Frame(self.root, bg="#F0F8FF")
         self.battle_frame.pack(expand=True)
 
-        opponents=["Flamey","Bubbly","Leafy","Zapper","Icy","Dracomenace","Groundian","Stoney","Metaleon","Chunky",
-           "Misteon","Fisty","Nasty","Brainy","Spooky","Birdy","Beetlebug","Sludgemound"]
-        opponents.remove(self.player_pokemon.name)
-        self.available_opponents = opponents[:]  # Create a list of available opponents
-
         # Randomly select an opponent Pokémon that hasn't been used yet
         if len(self.available_opponents) > 0:
             opponent_data = random.choice(self.available_opponents)
@@ -138,7 +104,7 @@ class Mainframe:
             # If no opponents are left, end the game
             self.end_game("No more opponents available! You've won all battles!")
 
-        self.opponent_pokemon = Pokemon(opponent_data)
+        self.opponent_pokemon = Pokemon(datastore,opponent_data,nat_list)
         self.opponent_pokemon.nat_b()
         self.opponent_pokemon.calc_stats()
 
@@ -166,7 +132,7 @@ class Mainframe:
                 button.config(state=tk.DISABLED)
 
             # Player's turn
-            damage, critical,super_effective,not_effective = player_move.use_move(self.player_pokemon, self.opponent_pokemon)
+            damage, critical,super_effective,not_effective = player_move.use_move(datastore,self.player_pokemon, self.opponent_pokemon)
             self.log_message(f"{self.player_pokemon.name} used {player_move.name}! It dealt {damage} damage{' (Critical Hit!)' if critical else ''}{' (Super Effective!)' if super_effective else ''}{' (Not Very Effective!)' if not_effective else ''}.")
             self.update_health_bars()
 
@@ -176,11 +142,8 @@ class Mainframe:
                 self.root.update()
                 self.check_for_more_battles()
                 return
-            # else:
-            #     self.root.after(1000, self.opponent_turn)
-            
             opponent_move = random.choice(self.opponent_pokemon.moves)
-            damage, critical,super_effective,not_effective = opponent_move.use_move(self.opponent_pokemon, self.player_pokemon)
+            damage, critical,super_effective,not_effective = opponent_move.use_move(datastore,self.opponent_pokemon, self.player_pokemon)
             self.log_message(f"{self.opponent_pokemon.name} used {opponent_move.name}! It dealt {damage} damage{' (Critical Hit!)' if critical else ''}{' (Super Effective!)' if super_effective else ''}{' (Not Very Effective!)' if not_effective else ''}.")
             self.update_health_bars()
 
@@ -189,7 +152,6 @@ class Mainframe:
                 self.root.update()
                 self.player_lost = True
                 self.check_for_more_battles()
-                # self.root.after(3000,self.end_game("You lost! Game Over."))
                 return
             else:
                 # Re-enable move buttons for the player's next turn
@@ -200,7 +162,7 @@ class Mainframe:
                 button.config(state=tk.DISABLED)
 
             opponent_move = random.choice(self.opponent_pokemon.moves)
-            damage, critical,super_effective,not_effective = opponent_move.use_move(self.opponent_pokemon, self.player_pokemon)
+            damage, critical,super_effective,not_effective = opponent_move.use_move(datastore,self.opponent_pokemon, self.player_pokemon)
             self.log_message(f"{self.opponent_pokemon.name} used {opponent_move.name}! It dealt {damage} damage{' (Critical Hit!)' if critical else ''}{' (Super Effective!)' if super_effective else ''}{' (Not Very Effective!)' if not_effective else ''}.")
             self.update_health_bars()
 
@@ -209,7 +171,6 @@ class Mainframe:
                 self.root.update()
                 self.player_lost = True
                 self.check_for_more_battles()
-                # self.root.after(5000,self.end_game("You lost! Game Over."))
                 return
             else:
                 # Re-enable move buttons for the player's next turn
@@ -217,7 +178,7 @@ class Mainframe:
                     button.config(state=tk.NORMAL)
             
             # Player's turn
-            damage, critical, super_effective,not_effective = player_move.use_move(self.player_pokemon, self.opponent_pokemon)
+            damage, critical, super_effective,not_effective = player_move.use_move(datastore,self.player_pokemon, self.opponent_pokemon)
             self.log_message(f"{self.player_pokemon.name} used {player_move.name}! It dealt {damage} damage{' (Critical Hit!)' if critical else ''}{' (Super Effective!)' if super_effective else ''}{' (Not Very Effective!)' if not_effective else ''}.")
             self.update_health_bars()
 
@@ -284,3 +245,4 @@ class Mainframe:
 root = tk.Tk()
 battle_gui = Mainframe(root)
 root.mainloop()
+datastore.close_connection()
