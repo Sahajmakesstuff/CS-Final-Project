@@ -46,7 +46,6 @@ class Mainframe:
 
     # Splash screen to start the game
     def splash_screen(self):
-        self.battles_left = 10  # Max of 10 battles
         self.available_opponents = opponents[:]  # Create a list of available opponents
         self.player_pokemon = None
         self.player_lost = False
@@ -153,7 +152,6 @@ class Mainframe:
             # Check if the opponent's Pokémon has fainted
             if self.opponent_pokemon.is_fainted():
                 self.log_message(f"{self.opponent_pokemon.name} fainted!")
-                self.battles_left -= 1
                 self.root.update()
                 self.check_for_more_battles()   #check if more battles are left
                 return
@@ -228,7 +226,7 @@ class Mainframe:
             self.root.after(3000,self.end_game("You lost! Game Over."))
             return
 
-        if self.battles_left == 0:  #if all battles are won
+        if len(self.available_opponents)<7:  #if all battles are won
             self.root.update()
             self.root.after(3000,self.end_game("Congratulations! You've won all 10 battles!"))  
         else:
